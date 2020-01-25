@@ -1,0 +1,7 @@
+#!/bin/bash
+# intruder-alert
+# Sends alert as email with Subject (change email to desired address)
+#
+
+(echo IP ADDRESS COUNTRY   PORT    PID  PROCESS NAME;
+ ~/HOMEWORK/Homework6/openportwprocess) | mail -s "Intruder Alert"  "$EMAIL"

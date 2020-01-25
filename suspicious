@@ -1,0 +1,61 @@
+#!/bin/bash
+# suspicious
+# Idetifies established connections on local ports under 10000
+# Ignores connections made on our private local network
+
+OUTSIDERS=`netstat -an | awk '$6~"ESTABLISHED" {print $4":"$5}' | 
+		  awk -F: '$2<10000 {print $0}' | sed 's/:/ /g' |
+		   awk '{print $2":"$3}'`
+
+# Only borrowed decimal to binary from StackOverflow
+# https://stackoverflow.com/questions/10278513/bash-shell-decimal-to-binary-base-2-conversion
+D2B=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
+
+NET=`/sbin/ifconfig | head -2 | tail -1 | awk '{print $4}' | sed 's/\./ /g'`
+
+localAND=`~/HOMEWORK/Homework6/ipandnetmask`
+#echo "localAND" $localAND
+
+# convert Network to binary
+for i in $NET
+do
+    netBinary+=`echo ${D2B[$i]}; echo " "`
+done
+#echo "Binary network" $netBinary
+
+index=0
+iter=1
+for i in $OUTSIDERS
+do
+    foreign=`echo $i | awk -F: '{print $2}'`
+    temp=`echo $foreign | sed 's/\./ /g'`
+    for j in $temp
+    do
+	foreignBin=`echo ${D2B[$j]}; echo " "`
+	#echo "foreign binary address" $foreignBin
+	for k in 0 1 2 3 4 5 6 7
+	do
+	    bitNet=`echo $netBinary | awk -v itera="$iter" '{print $itera}'`
+	    #echo $bitNet
+	    if [ "${foreignBin:k:1}" == '1' ] && [ "${bitNet:k:1}" == '1' ] 
+	    then
+   	    result[index]+="1"
+	    else
+		result[index]+="0"  
+	    fi  
+	done
+	result[index]+=" "
+	((iter++))
+    done
+    ForeignAND[index]=`echo ${result[index]} | sed 's/ //g'` #take out white spaces for comparison
+    localANDnoSpaces=`echo $localAND | sed 's/ //g'`        #take out white spaces for comparison
+    # echo "FirstAND  " "${localANDnoSpaces}"
+    # echo "ForeignAND" "${ForeignAND[index]}"
+    if [ "${ForeignAND[index]}" == "$localANDnoSpaces" ]; then 
+	OUT+=`echo $i; echo " "`
+    fi	
+    ((index++))
+done
+
+#echo "Foreign Intruders"
+echo $OUT

@@ -1,0 +1,49 @@
+#!/bin/bash
+# ipandnetmask
+# Performs bitwise AND to get local Network address
+
+D2B=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
+
+IPfull=`/sbin/ifconfig | head -2 | tail -1 | awk '{print $2}' | sed 's/\./ /g'`
+
+NET=`/sbin/ifconfig | head -2 | tail -1 | awk '{print $4}' | sed 's/\./ /g'`
+
+for i in $IPfull
+do
+	ipBinary+=`echo ${D2B[$i]}; echo " "`
+done
+
+
+for i in $NET
+do
+    netBinary+=`echo ${D2B[$i]}; echo " "`
+done
+
+index=1
+for i in $ipBinary
+do
+    for j in 0 1 2 3 4 5 6 7
+    do
+	bitNet=`echo $netBinary | awk -v ind="$index" '{print $ind }'`
+	if [ "${i:j:1}" == '1' ] && [ "${bitNet:j:1}" == '1' ]
+	then
+	    result+="1"
+	else
+	    result+="0"
+	fi    
+    done
+    result+=" "
+    ((index++))
+done
+
+echo $result
+
+#for i in $result
+#do
+#    NETWORK+=`echo "ibase=2;obase=A;$i" | bc`
+#    NETWORK+=" "
+#done
+
+# Returns local network address
+#echo $NETWORK
+	     
