@@ -38,12 +38,3 @@ done
 
 echo $result
 
-#for i in $result
-#do
-#    NETWORK+=`echo "ibase=2;obase=A;$i" | bc`
-#    NETWORK+=" "
-#done
-
-# Returns local network address
-#echo $NETWORK
-	     

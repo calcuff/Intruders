@@ -7,8 +7,6 @@ OUTSIDERS=`netstat -an | awk '$6~"ESTABLISHED" {print $4":"$5}' |
 		  awk -F: '$2<10000 {print $0}' | sed 's/:/ /g' |
 		   awk '{print $2":"$3}'`
 
-# Only borrowed decimal to binary from StackOverflow
-# https://stackoverflow.com/questions/10278513/bash-shell-decimal-to-binary-base-2-conversion
 D2B=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
 
 NET=`/sbin/ifconfig | head -2 | tail -1 | awk '{print $4}' | sed 's/\./ /g'`

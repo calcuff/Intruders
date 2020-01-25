@@ -1,6 +1,6 @@
 #!/bin/bash
 # intruder-alert
-# Sends alert as email with Subject (change email to desired address)
+# Emails final alert table
 #
 
 (echo IP ADDRESS COUNTRY   PORT    PID  PROCESS NAME;

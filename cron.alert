@@ -1,5 +1,4 @@
 # cron.alert
-# submit as cron.job
-# will email results of intruder-alert every 15 minutes
+# email results of intruder-alert every 15 minutes
 
 */15 * * * * ~/HOMEWORK/Homework6/intruder-alert

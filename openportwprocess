@@ -1,5 +1,6 @@
 #!/bin/bash
-# openportwprocess, returns IP, COUNTRY, PORT#, PID, NAME
+# openportwprocess
+# returns IP, COUNTRY, PORT#, PID, NAME
 # Sorted on Country
 
 for i in `~/HOMEWORK/Homework6/suspicious`
